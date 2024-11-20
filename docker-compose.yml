@@ -1,0 +1,35 @@
+services:
+  php:
+    build: .
+    container_name: php_container
+    ports:
+      - "8080:80" # Expose le conteneur sur le port 8080
+    volumes:
+      - ./php:/var/www/html # Monte les fichiers PHP locaux
+    depends_on:
+      - mysql
+    command: >
+      bash -c "composer install && apache2-foreground" # Exécute Composer avant de démarrer Apache
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: blog
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blogupwd
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  backend:
