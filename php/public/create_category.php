@@ -1,14 +1,17 @@
 <?php
 
-use Entities\Product;
+use Entities\Category;
 
 require_once __DIR__ . '/../config/bootstrap.php';
 
 /** @var \Doctrine\ORM\EntityManager $entityManager */
 $entityManager = require __DIR__ . '/../config/bootstrap.php';
 
-$productRepository = $entityManager->getRepository(Product::class);
-$products = $productRepository->findOneAndDelete(1);
+$category = new Category();
+$category->setName('Fantasy');
+$category->setCreatedAt(new DateTime('now'));
 
-$entityManager->persist($products);
+$entityManager->persist($category);
 $entityManager->flush();
+
+echo "fin du script";

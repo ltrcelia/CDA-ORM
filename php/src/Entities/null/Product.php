@@ -19,6 +19,10 @@ class Product
     #[ORM\Column(type: "float")]
     private float $price;
 
+    #[ORM\OneToOne(targetEntity: Company::class, mappedBy: "product", cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(name: "company_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    private $company;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -28,19 +32,32 @@ class Product
     {
         return $this->name;
     }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
 
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
     public function setPrice(float $price): self
     {
         $this->price = $price;
         return $this;
     }
-};
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+        return $this;
+    }
+}
